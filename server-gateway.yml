@@ -1,0 +1,31 @@
+server:
+  port: 7000
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: vuelos-servicio
+        uri: lb://microservicio-vuelos   #lb lo usamos para indicar directamente la direccion de eureka
+        predicates:
+        - Path=/vuelos/**
+        filters:
+        - RewritePath=/vuelos/*,/
+        
+      - id: hoteles-servicio
+        uri: lb://microservicio-hoteles
+        predicates:
+        - Path=/hoteles/**
+        filters:
+        - RewritePath=/hoteles/*,/
+        
+      - id: reservas-servicio
+        uri: lb://microservicio-reserva
+        predicates:
+        - Path=/reservas/**
+        filters:
+        - RewritePath=/reservas/*,/
+        
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka
